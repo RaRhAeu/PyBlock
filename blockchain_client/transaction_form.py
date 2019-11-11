@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, DecimalField, HiddenField
+from wtforms import StringField, SubmitField, IntegerField, HiddenField
 from wtforms.validators import Required, URL
 
 
@@ -9,6 +9,6 @@ class TransactionForm(FlaskForm):
     recipient_address = StringField(
         'Recipient Address: ', validators=[Required()]
         )
-    amount = DecimalField("Amount to Send: ", places=2)
-    # node_url = HiddenField(validators=[URL()])
+    amount = IntegerField("Amount to Send: ")
+    node_url = HiddenField(validators=[URL()], default="http://127.0.0.1:5000")
     submit = SubmitField('Submit')

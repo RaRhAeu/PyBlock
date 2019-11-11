@@ -2,7 +2,7 @@ import binascii
 import Crypto
 from Crypto.PublicKey import RSA
 
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, flash, redirect, url_for
 from flask_bootstrap import Bootstrap
 
 from transaction import Transaction
@@ -45,19 +45,22 @@ def make_trans():
 
 @app.route('/generate/transaction', methods=['POST'])
 def generate_transaction():
-    print('AAAAAAAAAAAAAAAAAAAaa')
     form = TransactionForm()
+    # print('asdsadasads')
     if form.validate_on_submit():
         sender_address = form.sender_address.data
         sender_private_key = form.sender_private_key.data
         recipient_address = form.recipient_address.data
-        value = form.amount.data
+        value = int(form.amount.data)
         transaction = Transaction(
             sender_address, sender_private_key, recipient_address, value
          )
-        print('AAAAAAAAAAAAAAAAAAAaa')
         print(transaction.to_dict())
-        return redirect(url_for('make_trans'))
+        # print('asdsadasads')
+        flash('Successfull Transaction!')
+    else:
+        flash('Incorrect data, try again.')
+    return redirect(url_for('make_trans'))
 
 
 if __name__ == '__main__':

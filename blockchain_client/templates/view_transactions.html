@@ -1,6 +1,5 @@
 {% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% block title %}Make Transaction{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block navbar %}
   <div class="navbar navbar-inverse" role="navigation">
@@ -19,7 +18,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/">Wallet Generator</a></li>
         <li><a href="/make/transaction">Make Transaction</a></li>
-        <li><a href="/view/transaction">View Transactions</a></li>
+        <li><a href="/">View Transactions</a></li>
       </ul>
     </div>
   </div>
@@ -27,18 +26,6 @@
 
 {% endblock %}
 {% block content %}
-
-<div class="container alert alert-secondary">
-  {% for message in get_flashed_messages() %}
-  <div class="alert alert-warning">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  {{ message }}
-  </div>
-  {% endfor %}
-      {{ wtf.quick_form(form, action="/generate/transaction")}}
-   </div>
-
-
-
-
+<div class="container">
+</div>
 {% endblock %}
