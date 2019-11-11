@@ -2,10 +2,11 @@ import binascii
 import Crypto
 from Crypto.PublicKey import RSA
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from flask_bootstrap import Bootstrap
 
-from .transaction import Transaction
+from transaction import Transaction
+from transaction_form import TransactionForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'GoAzCIP8jN1MJbjvRI9RzWR4mwOfr9v9GINXga3n_r8'
@@ -15,11 +16,6 @@ bootstrap = Bootstrap(app)
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-@app.route('/make/transaction')
-def make_transaction():
-    return render_template('make_transaction.html')
 
 
 @app.route('/view/transaction')
@@ -41,20 +37,28 @@ def new_wallet():
     return jsonify(response), 200
 
 
+@app.route('/make/transaction', methods=['GET'])
+def make_trans():
+    form = TransactionForm()
+    return render_template('make_transaction.html', form=form)
+
+
 @app.route('/generate/transaction', methods=['POST'])
 def generate_transaction():
-    # TODO: Refactor as a WTFORM and add validators
-    sender_address = request.form['sender_address']
-    sender_private_key = request.form['sender_private_key']
-    recipient_address = request.form['recipient_address']
-    value = request.form['amoun']
-    transaction = Transaction(
-                              sender_address,
-                              sender_private_key,
-                              recipient_address,
-                              value)
-    response = {
-                'transaction': transaction.to_dict(),
-                'signature': transaction.sign_transaction()
-                }
-    return jsonify(response), 201
+    print('AAAAAAAAAAAAAAAAAAAaa')
+    form = TransactionForm()
+    if form.validate_on_submit():
+        sender_address = form.sender_address.data
+        sender_private_key = form.sender_private_key.data
+        recipient_address = form.recipient_address.data
+        value = form.amount.data
+        transaction = Transaction(
+            sender_address, sender_private_key, recipient_address, value
+         )
+        print('AAAAAAAAAAAAAAAAAAAaa')
+        print(transaction.to_dict())
+        return redirect(url_for('make_trans'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
