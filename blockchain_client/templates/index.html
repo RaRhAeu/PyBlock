@@ -1,0 +1,88 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block navbar %}
+  <div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle"
+        data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">PyBlock</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Wallet Generator</a></li>
+        <li><a href="/">Make Transaction</a></li>
+        <li><a href="/">View Transactions</a></li>
+      </ul>
+    </div>
+  </div>
+  </div>
+
+{% endblock %}
+{% block content %}
+<div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+
+
+          <div class="card-body">
+            <h4 class="card-title">Wallet Generator</h4>
+            <p class="card-text">Click on the button below to generate your blockchain wallet</p>
+            <input type="button" class="btn btn-primary btn-lg" onclick="generate()"value="Generate Wallet">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="container">
+
+        <div class="row">
+          <label class="col-sm-2">Public Key:</label>
+          <div class="col-sm-10">
+            <textarea id="public_key" rows="5" class="form-control" readonly></textarea>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <label class="col-sm-2">Private Key:</label>
+          <div class="col-sm-10">
+            <textarea id="private_key" rows="5" class="form-control" readonly></textarea>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row" id="warning" style="display:none">
+          <div class="col-sm-12">
+            <div class="alert alert-danger" role="alert">
+              IMPORTANT
+              <ul>
+                <li>Save you private and public keys. These keys cannot be recovered!</li>
+                <li>Don't share your private key with anyone!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    </div>
+    <script>
+    async function generate() {
+      const res = await fetch("/wallet/new");
+      const jsonData = await res.json();
+      document.getElementById("private_key").innerHTML = jsonData.private_key;
+      document.getElementById("public_key").innerHTML = jsonData.public_key;
+      document.getElementById("warning").style.display = "block";
+    }
+      </script>
+{% endblock %}
