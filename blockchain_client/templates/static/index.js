@@ -80,3 +80,72 @@ function generate() {
           });
       });
     </script>
+
+async function view_transactions() {
+  // TODO: change to node IP
+  const res = await fetch("127.0.0.1:5000/chain");
+  const data = await res.json();
+  const transactions = [];
+  for(let i = 1; i < data.length; i++) {
+    for(let j = 0; j< data["chain"][i]["transactions"].length; j++) {
+      var opts = {  year: "numeric", month: "short",  day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"  };
+      var formattedDateTime = date.toLocaleTimeString("en-us", options);
+      let transaction = [count,
+                    response["chain"][i]["transactions"][j]["recipient_address"],
+                    response["chain"][i]["transactions"][j]["sender_address"],
+                    response["chain"][i]["transactions"][j]["value"],
+                    formattedDateTime,
+                    response["chain"][i]["block_number"]];
+      transactions.push(transaction);
+    }
+  }
+  console.table(transactions);
+}
+
+    <script>
+      $(function(){
+
+        $('#view_transactions').click(function(){
+          $.ajax({
+            url: document.getElementById("node_url").value + "/chain",
+            type: 'GET',
+            success: function(response){
+              console.log(response);
+              //Generate Transactions Table
+              var transactions = [];
+              count = 1;
+              for (i = 1; i < response.length; i++) {
+                for (j = 0; j < response["chain"][i]["transactions"].length; j++) {
+                  //format date
+                  var options = {  year: "numeric", month: "short",  day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"  };
+                  var date = new Date(response["chain"][i]["timestamp"] * 1000);
+                  var formattedDateTime = date.toLocaleTimeString("en-us", options);
+                  transaction = [count,
+                                response["chain"][i]["transactions"][j]["recipient_address"],
+                                response["chain"][i]["transactions"][j]["sender_address"],
+                                response["chain"][i]["transactions"][j]["value"],
+                                formattedDateTime,
+                                response["chain"][i]["block_number"]];
+                  transactions.push(transaction);
+                  count += 1;
+                };
+              };
+              // Restrict a column to 10 characters, do split words
+                $('#transactions_table').dataTable( {
+                  data: transactions,
+                  columns: [{ title: "#" },
+                            { title: "Recipient Address"},
+                            { title: "Sender Address"},
+                            { title: "Value"},
+                            { title: "Timestamp"},
+                            { title: "Block"}],
+                  columnDefs: [ {targets: [1,2,3,4,5], render: $.fn.dataTable.render.ellipsis( 25 )}]
+                } );
+            },
+            error: function(error){
+              console.log(error);
+            }
+          });
+        });
+      })
+    </script>

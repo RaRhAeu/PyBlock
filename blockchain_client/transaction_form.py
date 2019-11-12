@@ -9,6 +9,6 @@ class TransactionForm(FlaskForm):
     recipient_address = StringField(
         'Recipient Address: ', validators=[Required()]
         )
-    amount = IntegerField("Amount to Send: ")
-    node_url = HiddenField(validators=[URL()], default="http://127.0.0.1:5000")
+    amount = IntegerField('Amount to Send: ')
+    node_url = HiddenField(validators=[URL()], default="http://127.0.0.1:8888")
     submit = SubmitField('Submit')

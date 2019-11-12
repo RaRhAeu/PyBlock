@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
-from .blockchain import Blockchain
+from blockchain import Blockchain
 
 
 app = Flask(__name__)
@@ -86,7 +86,7 @@ def mine():
     return jsonify(response), 200
 
 
-@app.route('nodes/register', methods=['POST'])
+@app.route('/nodes/register', methods=['POST'])
 def register_node():
     values = request.form
     nodes = values.get('nodes').replace(' ', '').split(',')
@@ -126,3 +126,7 @@ def get_nodes():
     nodes = list(blockchain.nodes)
     response = {'nodes': nodes}
     return jsonify(response), 200
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8888)
