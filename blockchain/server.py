@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from blockchain import Blockchain
+from flask_bootstrap import Bootstrap
 
 
 app = Flask(__name__)
 CORS(app)
+bootstrap = Bootstrap(app)
 
 blockchain = Blockchain()
 
@@ -73,15 +75,15 @@ def mine():
         value=MINING_REWARD, signature=""
     )
     # Forge a new Block by adding it to the chain
-    prev_hash = blockchain.hash(last_block)
-    block = blockchain.create_block(nonce, prev_hash)
+    prievious_hash = blockchain.hash(last_block)
+    block = blockchain.create_block(nonce, prievious_hash)
 
     response = {
         'message': "New Block Forged",
         'block_number': block['block_number'],
         'transactions': block['transactions'],
         'nonce': block['nonce'],
-        'prev_hash': block['prev_hash']
+        'prievious_hash': block['prievious_hash']
     }
     return jsonify(response), 200
 

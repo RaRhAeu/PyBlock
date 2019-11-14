@@ -1,0 +1,83 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}PyBlock{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+          <button type="button" class="navbar-toggle"
+          data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">PyBlock</a>
+      </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li >
+          <a href="/">Mine</a>
+        </li>
+        <li class="nav-item active">
+          <a href="/configure">Configure</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% endblock %}
+{% block content %}
+<div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card-body">
+            <h4 class="card-title">Add Blockchain nodes</h4>
+            <p class="card-text">Enter a list of Blockchain node URLs separated by comma and click on "Add" button to add them to the list of nodes</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container alert alert-secondary">
+      <form id="node_form">
+        <div class="row">
+          <label class="col-sm-2">Node URLs:</label>
+          <div class="col-sm-10">
+            <input type="text" name="nodes" id="nodes" rows="2" class="form-control">
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <input type="button" id="add_node_button" class="btn btn-primary btn-lg" value="Add Node">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <hr>
+
+    <!-- List of nodes -->
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-12">
+          <div class="card-body">
+            <h4 class="card-title">This node can retrieve Blockchain data from the following nodes:</h4>
+          </div>
+        </div>
+
+        <div class="col-lg-12" id="list_nodes">
+
+        </div>
+
+      </div>
+    </div>
+{% endblock %}

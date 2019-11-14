@@ -71,6 +71,8 @@
      const res = await fetch("http://127.0.0.1:8888/chain");
      const data = await res.json();
      const transactions = [];
+     console.log(data);
+     /*
      for(let i = 1; i < data.length; i++) {
        for(let j = 0; j< data["chain"][i]["transactions"].length; j++) {
          var opts = {  year: "numeric", month: "short",  day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"  };
@@ -85,6 +87,8 @@
        }
      }
      console.table(transactions);
+     */
+     // TODO: Display transactions
    }
 </script>
 </div>

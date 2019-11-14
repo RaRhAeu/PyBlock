@@ -103,7 +103,7 @@ class Blockchain:
         Check if a hash value satisfies the mining conditions. Is used with
         proof_of_work function.
         """
-        guess = f"{transactions}{last_hash}{nonce}".encode()
+        guess = f"{transaction}{last_hash}{nonce}".encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:difficulty] == '0'*difficulty
 
