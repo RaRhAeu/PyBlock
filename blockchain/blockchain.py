@@ -16,7 +16,7 @@ import requests
 
 MINING_SENDER = "THE BLOCKCHAIN"
 MINING_REWARD = 1
-MINING_DIFFICULTY = 2
+MINING_DIFFICULTY = 7
 
 
 class Blockchain:

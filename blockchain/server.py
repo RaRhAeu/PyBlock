@@ -29,6 +29,7 @@ def new_transaction():
     # TODO: Refactor as a WTFORM with validators
     values = request.form  # ???
     required = ['sender_address', 'recipient_address', 'amount', 'signature']
+    # print(request.form)
     if not all(k in values for k in required):
         return 'Missing values', 400
     transaction_result = blockchain.submit_transaction(

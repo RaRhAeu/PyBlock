@@ -6,10 +6,10 @@ from Crypto.Signature import PKCS1_v1_5
 
 
 class Transaction:
-    def __init__(self, sender, private_key, recipent, value):
+    def __init__(self, sender, private_key, recipient, value):
         self.sender = sender
         self.sender_pk = private_key
-        self.recipent = recipent
+        self.recipient = recipient
         self.value = value
 
     def __getattr__(self, attr):
@@ -18,7 +18,7 @@ class Transaction:
     # refactor as json.dumps(self.__dict__, sort_keys=True) ?
     def to_dict(self):
         return OrderedDict({'sender:': self.sender,
-                            'recipent': self.recipent,
+                            'recipient': self.recipient,
                             'value': self.value})
 
     def sign_transaction(self):
@@ -26,6 +26,9 @@ class Transaction:
         private_key = RSA.importKey(binascii.unhexlify(self.sender_pk))
         signer = PKCS1_v1_5.new(private_key)
         h = SHA.new(str(self.to_dict()).encode('utf8'))
-        return binascii.hexlify(signer.sign(h).decode('ascii'))
+        # sig = signer.sign()
+        # verifier = PKCS1_v1_5.new(private_key.publickey())
+        # verified = verifier.verify(h, sig)
+        return binascii.hexlify(signer.sign(h)).decode('ascii')
 
 # TODO: rewrite mining as a C/C++ module for performance improvement

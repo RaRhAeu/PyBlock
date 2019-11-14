@@ -1,6 +1,8 @@
 import binascii
 import Crypto
 from Crypto.PublicKey import RSA
+import requests
+import json
 
 from flask import Flask, render_template, jsonify, flash, redirect, url_for
 from flask_bootstrap import Bootstrap
@@ -56,6 +58,11 @@ def generate_transaction():
             sender_address, sender_private_key, recipient_address, value
          )
         print(transaction.to_dict())
+        res = {'transaction': transaction.to_dict(),
+               'signature': transaction.sign_transaction()
+               }
+        requests.post("http://127.0.0.1:8888/transactions/new",
+                      json=res)
         # print('asdsadasads')
         flash('Successfull Transaction!')
     else:
