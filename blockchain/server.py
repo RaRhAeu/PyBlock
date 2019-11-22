@@ -26,16 +26,15 @@ def configure():
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
-    # TODO: Refactor as a WTFORM with validators
-    values = request.get_json()  # ???
-    print(values)
+    values = request.get_json()
+    # print(values)
     transaction_result = blockchain.submit_transaction(
         values['transaction']['sender'], values['transaction']['recipient'],
         values['transaction']['value'], values['signature']
     )
     if not transaction_result:
         response = {'message': 'Invalid Transaction!'}
-        print(response)
+        # print(response)
         return jsonify(response), 400
     else:
         response = {
