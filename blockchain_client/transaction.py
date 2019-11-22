@@ -17,7 +17,7 @@ class Transaction:
 
     # refactor as json.dumps(self.__dict__, sort_keys=True) ?
     def to_dict(self):
-        return OrderedDict({'sender:': self.sender,
+        return OrderedDict({'sender': self.sender,
                             'recipient': self.recipient,
                             'value': self.value})
 

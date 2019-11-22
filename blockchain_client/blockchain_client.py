@@ -63,6 +63,7 @@ def generate_transaction():
                }
         requests.post("http://127.0.0.1:8888/transactions/new",
                       json=res)
+        print(res)
         # print('asdsadasads')
         flash('Successfull Transaction!')
     else:

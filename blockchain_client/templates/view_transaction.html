@@ -18,7 +18,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/">Wallet Generator</a></li>
         <li><a href="/make/transaction">Make Transaction</a></li>
-        <li><a href="/">View Transactions</a></li>
+        <li><a href="/view_transaction">View Transactions</a></li>
       </ul>
     </div>
   </div>
@@ -53,7 +53,7 @@
 
        <div class="row">
          <div class="col-lg-12 text-center">
-           <input type="button"  onclick="view_transactions()" id="view_transactions" class="btn btn-primary btn-lg" value="View Transactions">
+           <input type="button" id="view_transactions" onclick="viewTransaction()" class="btn btn-primary btn-lg" value="View Transactions">
          </div>
        </div>
 
@@ -62,34 +62,53 @@
    <br>
    <!-- Blockchain Transactions Table -->
    <div class="container">
-     <table id="transactions_table" class="table table-striped table-bordered" cellspacing="0" width="100%">
-     </table>
+     <table id="transactions_table" class="table table-striped table-bordered">
+       <thead>
+    <tr>
+      <th scope="col">Block number</th>
+      <th scope="col">Recipient Address</th>
+      <th scope="col">Sender Address</th>
+      <th scope="col">Amount</th>
+    </tr>
+  </thead>
+      <tbody>
+      </tbody>
+    </table>
    </div>
-<script>
-   async function view_transactions() {
-     // TODO: change to node IP
-     const res = await fetch("http://127.0.0.1:8888/chain");
-     const data = await res.json();
-     const transactions = [];
-     console.log(data);
-     /*
-     for(let i = 1; i < data.length; i++) {
-       for(let j = 0; j< data["chain"][i]["transactions"].length; j++) {
-         var opts = {  year: "numeric", month: "short",  day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"  };
-         var formattedDateTime = date.toLocaleTimeString("en-us", options);
-         let transaction = [count,
-                       response["chain"][i]["transactions"][j]["recipient_address"],
-                       response["chain"][i]["transactions"][j]["sender_address"],
-                       response["chain"][i]["transactions"][j]["value"],
-                       formattedDateTime,
-                       response["chain"][i]["block_number"]];
-         transactions.push(transaction);
-       }
-     }
-     console.table(transactions);
-     */
-     // TODO: Display transactions
-   }
-</script>
+
 </div>
+
+<script>
+  async function viewTransaction(){
+            const node_url = document.getElementById("node_url").value;
+            fetch(`${node_url}/chain`)
+            .then(raw_res => raw_res.json())
+            .then(res_json=> {
+              console.log(res_json);
+              let tableRef = document.getElementById("transactions_table").getElementsByTagName('tbody')[0];
+              tableRef.innerHTML = '';
+              res_json['chain'].forEach(block => {
+                block['transactions'].forEach(transaction => {
+                  let tmp = `<tr>
+                              <th scope="row">${block['block_number']}</th>
+                              <td>${transaction['recipient_address']}</td>
+                              <td>${transaction['sender_address']}</td>
+                              <td>${transaction['value']}</td>
+                            </tr>`;
+                let tableRef = document.getElementById("transactions_table").getElementsByTagName('tbody')[0];
+                var newRow   = tableRef.insertRow();
+                newRow.innerHTML = tmp;
+                })
+              })
+
+            }).catch(err=> {
+              console.log(err);
+              let tableRef = document.getElementById("transactions_table").getElementsByTagName('tbody')[0];
+              tableRef.innerHTML = '';
+            });
+
+
+          }
+</script>
+
 {% endblock %}

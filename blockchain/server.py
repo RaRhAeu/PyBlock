@@ -27,17 +27,15 @@ def configure():
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
     # TODO: Refactor as a WTFORM with validators
-    values = request.form  # ???
-    required = ['sender_address', 'recipient_address', 'amount', 'signature']
-    # print(request.form)
-    if not all(k in values for k in required):
-        return 'Missing values', 400
+    values = request.get_json()  # ???
+    print(values)
     transaction_result = blockchain.submit_transaction(
-        values['sender_address'], values['recipient_address'],
-        values['amount'], values['signature']
+        values['transaction']['sender'], values['transaction']['recipient'],
+        values['transaction']['value'], values['signature']
     )
     if not transaction_result:
         response = {'message': 'Invalid Transaction!'}
+        print(response)
         return jsonify(response), 400
     else:
         response = {

@@ -102,5 +102,35 @@
      console.log(myjson);
      //window.location.reload();
    }
+     async function viewTransaction(){
+               const node_url = document.getElementById("node_url").value;
+               fetch(`${node_url}/chain`)
+               .then(raw_res => raw_res.json())
+               .then(res_json=> {
+                 console.log(res_json);
+                 let tableRef = document.getElementById("transactions_table").getElementsByTagName('tbody')[0];
+                 tableRef.innerHTML = '';
+                 res_json['chain'].forEach(block => {
+                   block['transactions'].forEach(transaction => {
+                     let tmp = `<tr>
+                                 <th scope="row">${block['block_number']}</th>
+                                 <td>${transaction['recipient_address']}</td>
+                                 <td>${transaction['sender_address']}</td>
+                                 <td>${transaction['value']}</td>
+                               </tr>`;
+                   let tableRef = document.getElementById("transactions_table").getElementsByTagName('tbody')[0];
+                   var newRow   = tableRef.insertRow();
+                   newRow.innerHTML = tmp;
+                   })
+                 })
+
+               }).catch(err=> {
+                 console.log(err);
+                 let tableRef = document.getElementById("transactions_table").getElementsByTagName('tbody')[0];
+                 tableRef.innerHTML = '';
+               });
+
+
+             }
    </script>
 {% endblock %}

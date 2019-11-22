@@ -14,7 +14,7 @@ $(function(){
     });
   });
 })
-WTF????? JUST SUBMIT A FORM XDDD
+// WTF????? JUST SUBMIT A FORM XDDD
 
 function generate() {
   fetch('/wallet/new')
